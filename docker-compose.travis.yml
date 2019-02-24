@@ -7,10 +7,17 @@ services:
       - MYSQL_DATABASE=symfony
       - MYSQL_USER=symfony
       - MYSQL_PASSWORD=password
+    volumes:
+      - ./data/mysql:/var/lib/mysql:cached
+  redis:
+    build: ./docker/redis
+    volumes:
+      - ./data/redis:/data:cached
   php:
     build: ./docker/php
     links:
       - mysql
+      - redis
     volumes:
       - ./symfony/:/var/www/symfony:cached
   nginx:
@@ -18,5 +25,8 @@ services:
     links:
       - php
     volumes:
-      - ./logs/nginx:/var/log/nginx:cached
       - ./symfony/:/var/www/symfony:cached
+  varnish:
+    build: ./docker/varnish
+    links:
+      - nginx
