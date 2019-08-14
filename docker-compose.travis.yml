@@ -12,11 +12,11 @@ services:
     links:
       - mysql
     volumes:
-      - ./symfony/:/var/www/symfony:cached
+      - ./:/var/www:cached
   nginx:
     build: ./docker/nginx
     links:
       - php
     volumes:
       - ./logs/nginx:/var/log/nginx:cached
-      - ./symfony/:/var/www/symfony:cached
+      - ./:/var/www:cached
